@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プライバシーポリシー / Privacy Policy — 腐言</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&family=Noto+Serif+JP:wght@300;400&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #c8b48a;
+    --ink-dim:   #7a6a52;
+    --ink-bright:#e8d4a8;
+    --bg:        #0e0b07;
+    --bg2:       #1a1510;
+    --gold:      #a07830;
+    --gold-bright:#d4a050;
+    --border:    rgba(160,120,48,0.25);
+    --red:       #8b2a2a;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    line-height: 2;
+    min-height: 100vh;
+  }
+
+  /* 背景の模様 */
+  body::before {
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 39px,
+        rgba(160,120,48,0.04) 39px,
+        rgba(160,120,48,0.04) 40px
+      );
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 60px 28px 100px;
+  }
+
+  /* ヘッダー */
+  .header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .game-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 42px;
+    color: var(--gold-bright);
+    letter-spacing: 0.4em;
+    margin-bottom: 8px;
+    text-shadow: 0 0 40px rgba(212,160,80,0.3);
+  }
+
+  .page-title {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 18px;
+    color: var(--ink-dim);
+    letter-spacing: 0.3em;
+    margin-bottom: 16px;
+  }
+
+  .page-title-en {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+  }
+
+  /* 言語切り替え */
+  .lang-switch {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 48px;
+  }
+
+  .lang-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink-dim);
+    padding: 8px 28px;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .lang-btn:first-child { border-radius: 1px 0 0 1px; }
+  .lang-btn:last-child  { border-radius: 0 1px 1px 0; border-left: none; }
+
+  .lang-btn.active {
+    border-color: var(--gold);
+    color: var(--gold-bright);
+    background: rgba(160,120,48,0.1);
+  }
+
+  /* セクション */
+  section {
+    margin-bottom: 44px;
+  }
+
+  h2 {
+    font-family: 'Shippori Mincho', serif;
+    font-size: 15px;
+    color: var(--ink-bright);
+    letter-spacing: 0.25em;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  h2::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  p {
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  ul {
+    list-style: none;
+    padding-left: 4px;
+  }
+
+  ul li {
+    color: var(--ink);
+    padding: 4px 0 4px 20px;
+    position: relative;
+  }
+
+  ul li::before {
+    content: '•';
+    position: absolute;
+    left: 6px;
+    color: var(--gold);
+  }
+
+  a {
+    color: var(--gold-bright);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(212,160,80,0.3);
+    transition: border-color 0.2s;
+  }
+
+  a:hover { border-color: var(--gold-bright); }
+
+  /* 更新日 */
+  .meta {
+    text-align: right;
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.15em;
+    margin-bottom: 40px;
+  }
+
+  /* フッター */
+  .footer {
+    margin-top: 60px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.15em;
+  }
+
+  /* 言語セクション制御 */
+  .lang-ja, .lang-en { display: block; }
+  body.en .lang-ja { display: none; }
+  body.en .lang-en { display: block; }
+  body.ja .lang-en { display: none; }
+  body.ja .lang-ja { display: block; }
+</style>
+</head>
+<body class="ja">
+
+<div class="container">
+
+  <!-- ヘッダー -->
+  <div class="header">
+    <div class="game-title">腐言</div>
+    <div class="page-title">プライバシーポリシー</div>
+    <div class="page-title-en">Privacy Policy</div>
+  </div>
+
+  <!-- 言語切り替え -->
+  <div class="lang-switch">
+    <button class="lang-btn active" id="btn-ja" onclick="setLang('ja')">🇯🇵 日本語</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">🇺🇸 English</button>
+  </div>
+
+  <!-- 更新日 -->
+  <div class="meta">
+    <span class="lang-ja">最終更新：2026年4月</span>
+    <span class="lang-en">Last updated: April 2026</span>
+  </div>
+
+  <!-- ===== 日本語版 ===== -->
+  <div class="lang-ja">
+
+    <section>
+      <h2>はじめに</h2>
+      <p>本プライバシーポリシーは、アプリ「腐言（くされごと）」（以下「本アプリ」）における個人情報の取り扱いについて説明するものです。本アプリをご利用いただくことで、本ポリシーに同意したものとみなします。</p>
+    </section>
+
+    <section>
+      <h2>収集する情報</h2>
+      <p>本アプリは以下の情報を収集する場合があります。</p>
+      <ul>
+        <li>広告配信のために使用されるデバイス識別子（広告ID等）</li>
+        <li>アプリの利用状況に関する匿名の統計情報</li>
+        <li>クラッシュレポート（アプリの安定性向上のため）</li>
+      </ul>
+      <p>本アプリは、氏名・住所・電話番号・メールアドレスなどの個人を直接特定できる情報を収集しません。</p>
+    </section>
+
+    <section>
+      <h2>広告について</h2>
+      <p>本アプリはGoogle AdMob（Googleが提供する広告サービス）を使用した広告を表示します。AdMobはユーザーに最適化された広告を提供するため、デバイスの広告IDを使用することがあります。</p>
+      <p>Googleのプライバシーポリシーは以下のページでご確認いただけます。</p>
+      <ul>
+        <li><a href="https://policies.google.com/privacy" target="_blank">Google プライバシーポリシー</a></li>
+      </ul>
+      <p>広告のパーソナライズはデバイスの設定からオプトアウトすることができます。</p>
+    </section>
+
+    <section>
+      <h2>アプリ内課金について</h2>
+      <p>本アプリはGoogle Play の課金システムを通じたアプリ内購入機能を提供する場合があります。決済に関する情報はGoogleが管理し、当方は決済情報（クレジットカード番号等）を取得・保存しません。</p>
+    </section>
+
+    <section>
+      <h2>データの保存について</h2>
+      <p>ゲームの進行状況（クリアしたステージ、設定情報等）はお客様のデバイス内にのみ保存されます。これらのデータは外部サーバーに送信されることはありません。</p>
+    </section>
+
+    <section>
+      <h2>第三者へのデータ提供</h2>
+      <p>本アプリは以下の場合を除き、収集した情報を第三者に提供しません。</p>
+      <ul>
+        <li>法令に基づく場合</li>
+        <li>広告配信のためにGoogle AdMobと情報を共有する場合（匿名化された統計情報のみ）</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>お子様のプライバシー</h2>
+      <p>本アプリは13歳未満の子どもから意図的に個人情報を収集しません。13歳未満のお子様が個人情報を提供したことが判明した場合は、速やかに削除します。</p>
+    </section>
+
+    <section>
+      <h2>プライバシーポリシーの変更</h2>
+      <p>本ポリシーは必要に応じて更新されることがあります。重要な変更がある場合は、アプリのアップデートを通じてお知らせします。最新のポリシーは常に本ページに掲載されます。</p>
+    </section>
+
+    <section>
+      <h2>お問い合わせ</h2>
+      <p>本プライバシーポリシーに関するご質問は、Google Playのアプリページに記載の連絡先までお問い合わせください。</p>
+    </section>
+
+  </div><!-- /lang-ja -->
+
+  <!-- ===== English Version ===== -->
+  <div class="lang-en">
+
+    <section>
+      <h2>Introduction</h2>
+      <p>This Privacy Policy explains how the app "Kusaregoto" (hereinafter "the App") handles personal information. By using the App, you agree to this policy.</p>
+    </section>
+
+    <section>
+      <h2>Information We Collect</h2>
+      <p>The App may collect the following information:</p>
+      <ul>
+        <li>Device identifiers (such as Advertising ID) used for ad delivery</li>
+        <li>Anonymous usage statistics about how the App is used</li>
+        <li>Crash reports (to improve app stability)</li>
+      </ul>
+      <p>The App does not collect personally identifiable information such as your name, address, phone number, or email address.</p>
+    </section>
+
+    <section>
+      <h2>Advertising</h2>
+      <p>The App displays advertisements using Google AdMob. AdMob may use your device's Advertising ID to provide personalized ads.</p>
+      <p>You can review Google's privacy policy at:</p>
+      <ul>
+        <li><a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a></li>
+      </ul>
+      <p>You can opt out of personalized advertising through your device settings.</p>
+    </section>
+
+    <section>
+      <h2>In-App Purchases</h2>
+      <p>The App may offer in-app purchases through Google Play's billing system. All payment information is managed by Google. We do not access or store your payment details (such as credit card numbers).</p>
+    </section>
+
+    <section>
+      <h2>Data Storage</h2>
+      <p>Your game progress (completed stages, settings, etc.) is stored locally on your device only. This data is never transmitted to external servers.</p>
+    </section>
+
+    <section>
+      <h2>Third-Party Data Sharing</h2>
+      <p>We do not share collected information with third parties except in the following cases:</p>
+      <ul>
+        <li>When required by law</li>
+        <li>When sharing anonymized statistics with Google AdMob for ad delivery purposes</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Children's Privacy</h2>
+      <p>The App does not knowingly collect personal information from children under the age of 13. If we become aware that a child under 13 has provided personal information, we will delete it promptly.</p>
+    </section>
+
+    <section>
+      <h2>Changes to This Policy</h2>
+      <p>This policy may be updated from time to time. If there are significant changes, we will notify you through an app update. The latest version will always be available on this page.</p>
+    </section>
+
+    <section>
+      <h2>Contact Us</h2>
+      <p>If you have any questions about this Privacy Policy, please contact us through the contact information listed on the App's Google Play page.</p>
+    </section>
+
+  </div><!-- /lang-en -->
+
+  <!-- フッター -->
+  <div class="footer">
+    <span class="lang-ja">© 2026 腐言 / Kusaregoto. All rights reserved.</span>
+    <span class="lang-en">© 2026 腐言 / Kusaregoto. All rights reserved.</span>
+  </div>
+
+</div>
+
+<script>
+function setLang(lang) {
+  document.body.className = lang;
+  document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.documentElement.lang = lang;
+}
+</script>
+</body>
+</html>
