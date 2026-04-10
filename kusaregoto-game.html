@@ -563,29 +563,12 @@
 </style>
 
 <style>
-html,body{
-margin:0;
-padding:0;
-width:100%;
-height:100%;
-}
+html,body{margin:0;padding:0;width:100%;height:100%;}
 
-.screen{
-display:none !important;
-width:100%;
-height:100%;
-}
+.screen{display:none !important;width:100%;height:100%;}
+.screen.active{display:flex !important;}
 
-.screen.active{
-display:flex !important;
-}
-
-#screen-lang{
-align-items:center;
-justify-content:center;
-flex-direction:column;
-text-align:center;
-}
+#screen-lang{align-items:center;justify-content:center;flex-direction:column;text-align:center;}
 
 #versionLabel{
 position:fixed;
@@ -598,22 +581,23 @@ z-index:999999;
 
 #debugBox{
 position:fixed;
-bottom:0;
-left:0;
-right:0;
-max-height:40%;
+bottom:6px;
+right:6px;
+width:180px;
+max-height:120px;
 overflow:auto;
-background:rgba(0,0,0,0.9);
+background:rgba(0,0,0,0.75);
 color:#00ff88;
-font-size:12px;
+font-size:10px;
 z-index:999999;
-padding:6px;
+padding:4px;
+pointer-events:none;
 }
 </style>
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.3-debug</div>
+<div id='versionLabel'>v0.0.4-debug</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6092,19 +6076,42 @@ function resetGame() {
 
 <script>
 
+function showScreen(id){
+debugLog("showScreen:"+id);
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+var el=document.getElementById(id);
+if(el) el.classList.add('active');
+if(id==='screen-worldmap' && typeof renderWorldMap==='function'){
+ renderWorldMap();
+}
+}
+
 function selectLang(lang){
 debugLog("selectLang:"+lang);
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-var t=document.getElementById('screen-title');
-if(t){t.classList.add('active');}
+currentLang=lang;
+showScreen('screen-title');
 }
 
 function startGame(){
 debugLog("startGame");
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-var m=document.getElementById('screen-worldmap');
-if(m){m.classList.add('active');}
-if(typeof renderWorldMap==='function'){renderWorldMap();}
+showScreen('screen-worldmap');
+}
+
+function openSettings(){
+debugLog("openSettings");
+var o=document.getElementById('overlay-settings');
+if(o) o.classList.add('show');
+}
+
+function closeSettings(){
+debugLog("closeSettings");
+var o=document.getElementById('overlay-settings');
+if(o) o.classList.remove('show');
+}
+
+function continueGame(){
+debugLog("continueGame");
+showScreen('screen-worldmap');
 }
 
 function debugLog(msg){
@@ -6114,18 +6121,15 @@ function debugLog(msg){
   d.id='debugBox';
   document.body.appendChild(d);
  }
- d.innerHTML+=msg+"<br>";
+ d.innerHTML=msg+"<br>"+d.innerHTML;
 }
 
 window.addEventListener('error',e=>{
- debugLog("ERROR:"+e.message);
+ debugLog("ERR:"+e.message);
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
- debugLog("DOM ready");
- document.querySelectorAll("button").forEach(b=>{
-  b.addEventListener("click",()=>debugLog("CLICK:"+b.textContent.trim()));
- });
+ debugLog("DOM");
 });
 
 </script>
