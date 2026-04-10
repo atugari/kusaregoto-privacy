@@ -563,12 +563,9 @@
 </style>
 
 <style>
-#screen-lang{
-display:flex !important;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-}
+.screen{display:none !important;}
+.screen.active{display:flex !important;}
+#screen-lang{align-items:center;justify-content:center;flex-direction:column;}
 </style>
 
 </head>
@@ -1559,10 +1556,11 @@ function showScreen(id) {
   if (id === 'screen-worldmap') renderWorldMap();
 }
 
-function startGame() {
-  SAVE = defaultSave();
-  writeSave(SAVE);
-  showScreen('screen-worldmap');
+function startGame(){
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+const m=document.getElementById('screen-worldmap');
+if(m){m.classList.add('active');}
+if(typeof renderWorldMap==='function'){renderWorldMap();}
 }
 
 function continueGame() {
@@ -5928,17 +5926,15 @@ let bgmVolume   = 50; // 0〜100・5刻み
 let bgmAudio    = null; // BGM用Audioオブジェクト（BGMファイルが決まったら設定）
 
 // ---------- 言語選択 ----------
-function selectLang(lang) {
-  currentLang = lang;
-  try { localStorage.setItem(LANG_KEY, lang); } catch(e){}
-  applyLang();
-  // 言語選択画面から来た場合はタイトルへ
-  if (document.getElementById('screen-lang').classList.contains('active')) {
-    showScreen('screen-title');
-  }
-  // 設定メニューから来た場合はボタンのハイライトを更新
-  updateLangButtons();
+function selectLang(lang){
+currentLang=lang;
+document.querySelectorAll('.screen').forEach(s=>{
+s.classList.remove('active');
+});
+const t=document.getElementById('screen-title');
+if(t){t.classList.add('active');}
 }
+
 
 function applyLang() {
   const T = I18N[currentLang] || I18N.ja;
@@ -6048,38 +6044,5 @@ function resetGame() {
   renderGameMap();
 }
 </script>
-
-<script>
-window.addEventListener('load', function(){
-
-  function go(id){
-    document.querySelectorAll('.screen').forEach(s=>{
-      s.classList.remove('active');
-      s.style.display='none';
-    });
-    const el=document.getElementById(id);
-    if(el){
-      el.classList.add('active');
-      el.style.display='flex';
-    }
-  }
-
-  // 全ボタンに直接イベント
-  document.querySelectorAll('button').forEach(btn=>{
-    const txt = btn.textContent || "";
-    if(txt.includes('日本語') || txt.includes('English')){
-      btn.onclick = ()=>go('screen-title');
-    }
-    if(btn.id==='btn-start'){
-      btn.onclick = ()=>go('screen-worldmap');
-    }
-  });
-
-  // 初期画面
-  go('screen-lang');
-
-});
-</script>
-
 </body>
 </html>
