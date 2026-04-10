@@ -609,7 +609,7 @@ padding:4px;
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.12</div>
+<div id='versionLabel'>v0.1.0</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6173,6 +6173,28 @@ function continueGame(){
 }
 
 window.addEventListener('error',e=>debugLog("ERR:"+e.message));
+
+</script>
+
+
+<script>
+/* ===== FIX PLAYABLE PATCH v0.1.0 ===== */
+
+function startGame(){
+  showScreen('screen-worldmap');
+  if(typeof renderWorldMap === 'function'){
+    renderWorldMap();
+  }
+}
+
+document.addEventListener('click', function(e){
+  const stage = e.target.closest('.wm-stage-item');
+  if(stage && stage.dataset && stage.dataset.stageId){
+    if(typeof enterStage === 'function'){
+      enterStage(stage.dataset.stageId);
+    }
+  }
+});
 
 </script>
 
