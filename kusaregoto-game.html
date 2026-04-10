@@ -563,11 +563,8 @@
 </style>
 
 <style>
-html,body{margin:0;padding:0;width:100%;height:100%;}
-
 .screen{display:none !important;width:100%;height:100%;}
 .screen.active{display:flex !important;}
-
 #screen-lang{align-items:center;justify-content:center;flex-direction:column;text-align:center;}
 
 #versionLabel{
@@ -581,23 +578,26 @@ z-index:999999;
 
 #debugBox{
 position:fixed;
-bottom:6px;
-right:6px;
-width:180px;
-max-height:120px;
+bottom:4px;
+right:4px;
+width:160px;
+max-height:90px;
 overflow:auto;
-background:rgba(0,0,0,0.75);
-color:#00ff88;
+background:rgba(0,0,0,.6);
+color:#0f0;
 font-size:10px;
 z-index:999999;
-padding:4px;
 pointer-events:none;
+padding:4px;
 }
+
+/* progress 非表示 */
+#wm-progress{display:none !important;}
 </style>
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.4-debug</div>
+<div id='versionLabel'>v0.0.5</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6076,60 +6076,72 @@ function resetGame() {
 
 <script>
 
-function showScreen(id){
-debugLog("showScreen:"+id);
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-var el=document.getElementById(id);
-if(el) el.classList.add('active');
-if(id==='screen-worldmap' && typeof renderWorldMap==='function'){
- renderWorldMap();
-}
-}
-
-function selectLang(lang){
-debugLog("selectLang:"+lang);
-currentLang=lang;
-showScreen('screen-title');
-}
-
-function startGame(){
-debugLog("startGame");
-showScreen('screen-worldmap');
-}
-
-function openSettings(){
-debugLog("openSettings");
-var o=document.getElementById('overlay-settings');
-if(o) o.classList.add('show');
-}
-
-function closeSettings(){
-debugLog("closeSettings");
-var o=document.getElementById('overlay-settings');
-if(o) o.classList.remove('show');
-}
-
-function continueGame(){
-debugLog("continueGame");
-showScreen('screen-worldmap');
-}
-
-function debugLog(msg){
+function debugLog(m){
  let d=document.getElementById('debugBox');
  if(!d){
   d=document.createElement('div');
   d.id='debugBox';
   document.body.appendChild(d);
  }
- d.innerHTML=msg+"<br>"+d.innerHTML;
+ d.innerHTML=m+"<br>"+d.innerHTML;
 }
 
-window.addEventListener('error',e=>{
- debugLog("ERR:"+e.message);
+function showScreen(id){
+ debugLog("screen:"+id);
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ let el=document.getElementById(id);
+ if(el) el.classList.add('active');
+ if(id==='screen-worldmap' && window.renderWorldMap){
+   renderWorldMap();
+ }
+}
+
+function selectLang(l){
+ debugLog("lang:"+l);
+ currentLang=l;
+ showScreen('screen-title');
+}
+
+function startGame(){
+ debugLog("start");
+ showScreen('screen-worldmap');
+}
+
+function openSettings(){
+ let o=document.getElementById('overlay-settings');
+ if(o) o.classList.add('show');
+}
+
+function closeSettings(){
+ let o=document.getElementById('overlay-settings');
+ if(o) o.classList.remove('show');
+}
+
+function continueGame(){
+ showScreen('screen-worldmap');
+}
+
+/* volume fix */
+document.addEventListener('input',e=>{
+ if(e.target.id==='volume-slider'){
+   let v=parseFloat(e.target.value);
+   if(window.setVolume) setVolume(v);
+   debugLog("vol:"+v);
+ }
 });
 
+/* stage click fix */
+document.addEventListener('click',e=>{
+ let s=e.target.closest('[data-stage]');
+ if(s && window.enterStage){
+   enterStage(s.dataset.stage);
+ }
+});
+
+window.addEventListener('error',e=>debugLog("ERR:"+e.message));
+
 document.addEventListener('DOMContentLoaded',()=>{
- debugLog("DOM");
+ debugLog("ready");
 });
 
 </script>
