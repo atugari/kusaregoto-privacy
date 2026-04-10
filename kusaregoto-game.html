@@ -609,8 +609,8 @@ padding:4px;
 
 </head>
 <body>
-<div style='position:fixed;top:6px;right:10px;font-size:12px;color:#999;z-index:9999'>v0.2.0</div>
-<div id='versionLabel'>v0.0.12</div>
+<div style='position:fixed;top:6px;right:10px;font-size:12px;color:#999;z-index:9999'>v0.3.0</div>
+
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6179,35 +6179,27 @@ window.addEventListener('error',e=>debugLog("ERR:"+e.message));
 
 
 <script>
-/* ===== Kusaregoto FIX v0.2.0 ===== */
+// ===== clean navigation fix =====
+document.addEventListener('DOMContentLoaded', function(){
 
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  const el = document.getElementById(id);
-  if(el) el.classList.add('active');
-}
+  window.selectLang = function(lang){
+    window.currentLang = lang;
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('screen-title').classList.add('active');
+  };
 
-function selectLang(lang){
-  window.currentLang = lang;
-  showScreen('screen-title');
-}
+  window.startGame = function(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('screen-worldmap').classList.add('active');
+    if(typeof renderWorldMap === 'function'){ renderWorldMap(); }
+  };
 
-function startGame(){
-  showScreen('screen-worldmap');
-  if(typeof renderWorldMap === 'function'){
-    renderWorldMap();
-  }
-}
+  window.continueGame = function(){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('screen-worldmap').classList.add('active');
+  };
 
-function continueGame(){
-  showScreen('screen-worldmap');
-}
-
-window.addEventListener('DOMContentLoaded',()=>{
-  const lang = document.getElementById('screen-lang');
-  if(lang) lang.classList.add('active');
 });
-
 </script>
 
 </body>
