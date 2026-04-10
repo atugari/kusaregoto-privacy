@@ -1558,7 +1558,7 @@ function showScreen(id) {
 
 function startGame(){
 document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-const m=document.getElementById('screen-worldmap');
+var m=document.getElementById('screen-worldmap');
 if(m){m.classList.add('active');}
 if(typeof renderWorldMap==='function'){renderWorldMap();}
 }
@@ -5927,14 +5927,11 @@ let bgmAudio    = null; // BGM用Audioオブジェクト（BGMファイルが決
 
 // ---------- 言語選択 ----------
 function selectLang(lang){
-currentLang=lang;
-document.querySelectorAll('.screen').forEach(s=>{
-s.classList.remove('active');
-});
-const t=document.getElementById('screen-title');
+currentLang = lang;
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+var t=document.getElementById('screen-title');
 if(t){t.classList.add('active');}
 }
-
 
 function applyLang() {
   const T = I18N[currentLang] || I18N.ja;
