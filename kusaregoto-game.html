@@ -561,8 +561,69 @@
     border-radius: 1px;
   }
 </style>
+
+<style>
+
+
+
+#versionLabel{
+position:fixed;
+top:6px;
+right:10px;
+font-size:12px;
+color:#999;
+z-index:999999;
+}
+
+#wm-progress,.wm-progress{display:none !important;}
+
+.area-btn{
+margin:8px 12px;
+padding:14px;
+border:1px solid #8a6a2f;
+color:#c8b48a;
+}
+
+.stage-btn{
+margin:6px 12px;
+padding:12px;
+border:1px solid #8a6a2f;
+color:#c8b48a;
+}
+
+#debugBox{
+position:fixed;
+bottom:4px;
+right:4px;
+width:180px;
+max-height:120px;
+overflow:auto;
+background:rgba(0,0,0,.7);
+color:#0f0;
+font-size:10px;
+z-index:999999;
+pointer-events:none;
+padding:4px;
+}
+</style>
+
+
+<style>
+#versionLabel{
+position:fixed;
+top:6px;
+right:10px;
+font-size:12px;
+color:#999;
+z-index:999999;
+pointer-events:none;
+}
+</style>
+
 </head>
 <body>
+<div id='versionLabel'>v0.1.1</div>
+<div id='versionLabel'>v0.0.12</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6038,5 +6099,96 @@ function resetGame() {
   renderGameMap();
 }
 </script>
+
+<script>
+
+function debugLog(m){
+ let d=document.getElementById('debugBox');
+ if(!d){
+  d=document.createElement('div');
+  d.id='debugBox';
+  document.body.appendChild(d);
+ }
+ d.innerHTML=m+"<br>"+d.innerHTML;
+}
+
+function showScreen(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ const el=document.getElementById(id);
+ if(el) el.classList.add('active');
+}
+
+function selectLang(lang){
+ window.currentLang=lang;
+ showScreen('screen-title');
+}
+
+function startGame(){
+ showScreen('screen-worldmap');
+ setTimeout(buildAreas,50);
+}
+
+/* 村生成 */
+function buildAreas(){
+ debugLog("buildAreas");
+ const container=document.querySelector("#screen-worldmap");
+ if(!container) return;
+
+ container.innerHTML = `
+ <div class="area-btn" data-area="west">西の村</div>
+ <div class="area-btn" data-area="east">東の村</div>
+ <div class="area-btn" data-area="north">北の村</div>
+ <div class="area-btn" data-area="south">南の村</div>
+ `;
+}
+
+/* ステージ生成 */
+function buildStages(area){
+ debugLog("buildStages:"+area);
+ const container=document.querySelector("#screen-worldmap");
+ if(!container) return;
+
+ container.innerHTML="";
+ for(let i=1;i<=5;i++){
+   const d=document.createElement("div");
+   d.className="stage-btn";
+   d.dataset.stage=area+"-"+i;
+   d.textContent="ステージ "+i;
+   container.appendChild(d);
+ }
+}
+
+document.addEventListener('click',e=>{
+
+ const area=e.target.closest('[data-area]');
+ if(area){
+   buildStages(area.dataset.area);
+ }
+
+ const stage=e.target.closest('[data-stage]');
+ if(stage){
+   showScreen('screen-game');
+ }
+
+});
+
+function openSettings(){
+ const el=document.getElementById('overlay-settings');
+ if(el) el.classList.add('show');
+}
+
+function closeSettings(){
+ const el=document.getElementById('overlay-settings');
+ if(el) el.classList.remove('show');
+}
+
+function continueGame(){
+ startGame();
+}
+
+window.addEventListener('error',e=>debugLog("ERR:"+e.message));
+
+</script>
+
 </body>
 </html>
