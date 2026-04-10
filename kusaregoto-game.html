@@ -575,13 +575,15 @@ color:#999;
 z-index:999999;
 }
 
-/* ネタバレ進捗削除 */
-#wm-progress,
-.wm-progress{
-display:none !important;
+#wm-progress,.wm-progress{display:none !important;}
+
+.stage-btn{
+margin:6px 12px;
+padding:12px;
+border:1px solid #8a6a2f;
+color:#c8b48a;
 }
 
-/* debug */
 #debugBox{
 position:fixed;
 bottom:4px;
@@ -600,7 +602,7 @@ padding:4px;
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.10</div>
+<div id='versionLabel'>v0.0.11</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6090,46 +6092,57 @@ function debugLog(m){
 }
 
 function showScreen(id){
- debugLog("screen:"+id);
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  const el=document.getElementById(id);
  if(el) el.classList.add('active');
 }
 
 function selectLang(lang){
- debugLog("lang:"+lang);
  window.currentLang=lang;
  showScreen('screen-title');
 }
 
 function startGame(){
- debugLog("startGame");
  showScreen('screen-worldmap');
- if(window.renderWorldMap) renderWorldMap();
 }
 
-/* エリア選択 */
+/* stage list */
+function renderStageList(area){
+ debugLog("renderStage:"+area);
+ const list =
+ document.querySelector("#stage-list") ||
+ document.querySelector(".stage-list") ||
+ document.querySelector("#screen-worldmap");
+
+ if(!list) return;
+
+ list.innerHTML="";
+ for(let i=1;i<=5;i++){
+   const d=document.createElement("div");
+   d.className="stage-btn";
+   d.dataset.stage=area+"-"+i;
+   d.textContent="ステージ "+i;
+   list.appendChild(d);
+ }
+}
+
 document.addEventListener('click',e=>{
 
  const area=e.target.closest('[data-area]');
  if(area){
-   debugLog("AREA:"+area.dataset.area);
-   if(window.selectArea){
-     selectArea(area.dataset.area);
-   }
+   const a=area.dataset.area;
+   debugLog("AREA:"+a);
+   renderStageList(a);
  }
 
  const stage=e.target.closest('[data-stage]');
  if(stage){
    debugLog("STAGE:"+stage.dataset.stage);
-   if(window.enterStage){
-     enterStage(stage.dataset.stage);
-   }
+   showScreen('screen-game');
  }
 
 });
 
-/* 設定 */
 function openSettings(){
  const el=document.getElementById('overlay-settings');
  if(el) el.classList.add('show');
@@ -6145,10 +6158,6 @@ function continueGame(){
 }
 
 window.addEventListener('error',e=>debugLog("ERR:"+e.message));
-
-document.addEventListener('DOMContentLoaded',()=>{
- debugLog("DOM ready");
-});
 
 </script>
 
