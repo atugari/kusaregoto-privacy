@@ -563,8 +563,8 @@
 </style>
 
 <style>
-.screen{display:none !important;width:100%;height:100%;}
-.screen.active{display:flex !important;flex-direction:column;}
+
+
 
 #versionLabel{
 position:fixed;
@@ -607,10 +607,17 @@ padding:4px;
 }
 </style>
 
+
+<style>
+.screen.active{
+display:flex !important;
+}
+</style>
+
 </head>
 <body>
-<div style='position:fixed;top:6px;right:10px;font-size:12px;color:#999;z-index:9999'>v0.3.0</div>
-
+<div style='position:fixed;top:6px;right:10px;font-size:12px;color:#999;z-index:9999'>v0.3.1</div>
+<div id='versionLabel'>v0.0.12</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6175,31 +6182,6 @@ function continueGame(){
 
 window.addEventListener('error',e=>debugLog("ERR:"+e.message));
 
-</script>
-
-
-<script>
-// ===== clean navigation fix =====
-document.addEventListener('DOMContentLoaded', function(){
-
-  window.selectLang = function(lang){
-    window.currentLang = lang;
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById('screen-title').classList.add('active');
-  };
-
-  window.startGame = function(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById('screen-worldmap').classList.add('active');
-    if(typeof renderWorldMap === 'function'){ renderWorldMap(); }
-  };
-
-  window.continueGame = function(){
-    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-    document.getElementById('screen-worldmap').classList.add('active');
-  };
-
-});
 </script>
 
 </body>
