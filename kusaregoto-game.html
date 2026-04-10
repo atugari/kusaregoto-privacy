@@ -563,19 +563,57 @@
 </style>
 
 <style>
+html,body{
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+}
+
+.screen{
+display:none !important;
+width:100%;
+height:100%;
+}
+
+.screen.active{
+display:flex !important;
+}
+
+#screen-lang{
+align-items:center;
+justify-content:center;
+flex-direction:column;
+text-align:center;
+}
+
 #versionLabel{
 position:fixed;
 top:6px;
 right:10px;
 font-size:12px;
-color:#888;
+color:#999;
 z-index:999999;
+}
+
+#debugBox{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+max-height:40%;
+overflow:auto;
+background:rgba(0,0,0,0.9);
+color:#00ff88;
+font-size:12px;
+z-index:999999;
+padding:6px;
 }
 </style>
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.1-debug</div>
+<div id='versionLabel'>v0.0.2-debug</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -5931,16 +5969,12 @@ let bgmVolume   = 50; // 0〜100・5刻み
 let bgmAudio    = null; // BGM用Audioオブジェクト（BGMファイルが決まったら設定）
 
 // ---------- 言語選択 ----------
-function selectLang(lang) {
-  currentLang = lang;
-  try { localStorage.setItem(LANG_KEY, lang); } catch(e){}
-  applyLang();
-  // 言語選択画面から来た場合はタイトルへ
-  if (document.getElementById('screen-lang').classList.contains('active')) {
-    showScreen('screen-title');
-  }
-  // 設定メニューから来た場合はボタンのハイライトを更新
-  updateLangButtons();
+function selectLang(lang){
+debugLog("selectLang:"+lang);
+currentLang=lang;
+document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+var t=document.getElementById('screen-title');
+if(t){t.classList.add('active');}
 }
 
 function applyLang() {
@@ -6051,5 +6085,29 @@ function resetGame() {
   renderGameMap();
 }
 </script>
+
+<script>
+function debugLog(msg){
+ let d=document.getElementById('debugBox');
+ if(!d){
+  d=document.createElement('div');
+  d.id='debugBox';
+  document.body.appendChild(d);
+ }
+ d.innerHTML+=msg+"<br>";
+}
+
+window.addEventListener('error',e=>{
+ debugLog("ERROR:"+e.message);
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+ debugLog("DOM ready");
+ document.querySelectorAll("button").forEach(b=>{
+  b.addEventListener("click",()=>debugLog("CLICK:"+b.textContent.trim()));
+ });
+});
+</script>
+
 </body>
 </html>
