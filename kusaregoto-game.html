@@ -577,6 +577,13 @@ z-index:999999;
 
 #wm-progress,.wm-progress{display:none !important;}
 
+.area-btn{
+margin:8px 12px;
+padding:14px;
+border:1px solid #8a6a2f;
+color:#c8b48a;
+}
+
 .stage-btn{
 margin:6px 12px;
 padding:12px;
@@ -602,7 +609,7 @@ padding:4px;
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.11</div>
+<div id='versionLabel'>v0.0.12</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6104,25 +6111,36 @@ function selectLang(lang){
 
 function startGame(){
  showScreen('screen-worldmap');
+ setTimeout(buildAreas,50);
 }
 
-/* stage list */
-function renderStageList(area){
- debugLog("renderStage:"+area);
- const list =
- document.querySelector("#stage-list") ||
- document.querySelector(".stage-list") ||
- document.querySelector("#screen-worldmap");
+/* 村生成 */
+function buildAreas(){
+ debugLog("buildAreas");
+ const container=document.querySelector("#screen-worldmap");
+ if(!container) return;
 
- if(!list) return;
+ container.innerHTML = `
+ <div class="area-btn" data-area="west">西の村</div>
+ <div class="area-btn" data-area="east">東の村</div>
+ <div class="area-btn" data-area="north">北の村</div>
+ <div class="area-btn" data-area="south">南の村</div>
+ `;
+}
 
- list.innerHTML="";
+/* ステージ生成 */
+function buildStages(area){
+ debugLog("buildStages:"+area);
+ const container=document.querySelector("#screen-worldmap");
+ if(!container) return;
+
+ container.innerHTML="";
  for(let i=1;i<=5;i++){
    const d=document.createElement("div");
    d.className="stage-btn";
    d.dataset.stage=area+"-"+i;
    d.textContent="ステージ "+i;
-   list.appendChild(d);
+   container.appendChild(d);
  }
 }
 
@@ -6130,14 +6148,11 @@ document.addEventListener('click',e=>{
 
  const area=e.target.closest('[data-area]');
  if(area){
-   const a=area.dataset.area;
-   debugLog("AREA:"+a);
-   renderStageList(a);
+   buildStages(area.dataset.area);
  }
 
  const stage=e.target.closest('[data-stage]');
  if(stage){
-   debugLog("STAGE:"+stage.dataset.stage);
    showScreen('screen-game');
  }
 
@@ -6154,7 +6169,7 @@ function closeSettings(){
 }
 
 function continueGame(){
- showScreen('screen-worldmap');
+ startGame();
 }
 
 window.addEventListener('error',e=>debugLog("ERR:"+e.message));
