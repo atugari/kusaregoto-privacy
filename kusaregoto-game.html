@@ -589,20 +589,11 @@ z-index:999999;
 pointer-events:none;
 padding:4px;
 }
-
-.debug-area{
-margin:10px;
-padding:14px;
-border:1px solid #8a6a2f;
-color:#c8b48a;
-}
-
-#wm-progress{display:none !important;}
 </style>
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.8-debug</div>
+<div id='versionLabel'>v0.0.9-debug</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6091,57 +6082,79 @@ function debugLog(m){
  d.innerHTML=m+"<br>"+d.innerHTML;
 }
 
+/* screen control */
 function showScreen(id){
  debugLog("screen:"+id);
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
- let el=document.getElementById(id);
+ const el=document.getElementById(id);
  if(el) el.classList.add('active');
 }
 
-function selectLang(l){
- debugLog("lang:"+l);
- currentLang=l;
+/* language */
+function selectLang(lang){
+ debugLog("lang:"+lang);
+ window.currentLang=lang;
  showScreen('screen-title');
 }
 
+/* start */
 function startGame(){
  debugLog("startGame");
  showScreen('screen-worldmap');
- setTimeout(buildDebugAreas,80);
+ if(window.renderWorldMap) renderWorldMap();
 }
 
-function buildDebugAreas(){
- debugLog("buildDebugAreas");
+/* AREA LOGIC RESTORE */
+function selectArea(area){
+ debugLog("selectArea:"+area);
+ enterArea(area);
+}
 
- let container =
- document.querySelector("#screen-worldmap .wm-areas") ||
- document.querySelector("#screen-worldmap .wm-list") ||
- document.querySelector("#screen-worldmap .wm-map") ||
- document.querySelector("#screen-worldmap");
-
- if(!container) {
-   debugLog("no container");
-   return;
- }
-
- debugLog("inject areas");
-
- container.innerHTML = `
- <div class="debug-area" data-area="west">西の村</div>
- <div class="debug-area" data-area="east">東の村</div>
- <div class="debug-area" data-area="north">北の村</div>
- <div class="debug-area" data-area="south">南の村</div>
+function enterArea(area){
+ debugLog("enterArea:"+area);
+ // simple stage list
+ const container=document.querySelector("#screen-worldmap");
+ container.innerHTML=`
+ <div class="debug-stage" data-stage="`+area+`-1">`+area+` 1</div>
+ <div class="debug-stage" data-stage="`+area+`-2">`+area+` 2</div>
+ <div class="debug-stage" data-stage="`+area+`-3">`+area+` 3</div>
  `;
 }
 
+function enterStage(id){
+ debugLog("enterStage:"+id);
+ showScreen('screen-game');
+}
+
+/* settings restore */
+function openSettings(){
+ debugLog("openSettings");
+ const el=document.getElementById('overlay-settings');
+ if(el) el.classList.add('show');
+}
+
+function closeSettings(){
+ debugLog("closeSettings");
+ const el=document.getElementById('overlay-settings');
+ if(el) el.classList.remove('show');
+}
+
+function continueGame(){
+ debugLog("continueGame");
+ showScreen('screen-worldmap');
+}
+
+/* click delegation */
 document.addEventListener('click',e=>{
 
- let area = e.target.closest('[data-area]');
+ const area=e.target.closest('[data-area]');
  if(area){
-   debugLog("AREA:"+area.dataset.area);
-   if(window.selectArea){
-     selectArea(area.dataset.area);
-   }
+   selectArea(area.dataset.area);
+ }
+
+ const stage=e.target.closest('[data-stage]');
+ if(stage){
+   enterStage(stage.dataset.stage);
  }
 
 });
