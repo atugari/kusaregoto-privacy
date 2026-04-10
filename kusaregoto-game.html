@@ -563,13 +563,19 @@
 </style>
 
 <style>
-.screen{display:none !important;}
-.screen.active{display:flex !important;}
-#screen-lang{align-items:center;justify-content:center;flex-direction:column;}
+#versionLabel{
+position:fixed;
+top:6px;
+right:10px;
+font-size:12px;
+color:#888;
+z-index:999999;
+}
 </style>
 
 </head>
 <body>
+<div id='versionLabel'>v0.0.1-debug</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -1556,11 +1562,10 @@ function showScreen(id) {
   if (id === 'screen-worldmap') renderWorldMap();
 }
 
-function startGame(){
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-var m=document.getElementById('screen-worldmap');
-if(m){m.classList.add('active');}
-if(typeof renderWorldMap==='function'){renderWorldMap();}
+function startGame() {
+  SAVE = defaultSave();
+  writeSave(SAVE);
+  showScreen('screen-worldmap');
 }
 
 function continueGame() {
@@ -5926,11 +5931,16 @@ let bgmVolume   = 50; // 0〜100・5刻み
 let bgmAudio    = null; // BGM用Audioオブジェクト（BGMファイルが決まったら設定）
 
 // ---------- 言語選択 ----------
-function selectLang(lang){
-currentLang = lang;
-document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-var t=document.getElementById('screen-title');
-if(t){t.classList.add('active');}
+function selectLang(lang) {
+  currentLang = lang;
+  try { localStorage.setItem(LANG_KEY, lang); } catch(e){}
+  applyLang();
+  // 言語選択画面から来た場合はタイトルへ
+  if (document.getElementById('screen-lang').classList.contains('active')) {
+    showScreen('screen-title');
+  }
+  // 設定メニューから来た場合はボタンのハイライトを更新
+  updateLangButtons();
 }
 
 function applyLang() {
