@@ -565,6 +565,7 @@
 <style>
 .screen{display:none !important;width:100%;height:100%;}
 .screen.active{display:flex !important;}
+
 #screen-lang{align-items:center;justify-content:center;flex-direction:column;text-align:center;}
 
 #versionLabel{
@@ -596,7 +597,7 @@ padding:4px;
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.6-debug</div>
+<div id='versionLabel'>v0.0.7-debug</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6090,9 +6091,6 @@ function showScreen(id){
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
  let el=document.getElementById(id);
  if(el) el.classList.add('active');
- if(id==='screen-worldmap' && window.renderWorldMap){
-   renderWorldMap();
- }
 }
 
 function selectLang(l){
@@ -6102,50 +6100,63 @@ function selectLang(l){
 }
 
 function startGame(){
- debugLog("start");
+ debugLog("startGame");
  showScreen('screen-worldmap');
+ setTimeout(forceRenderMap,50);
+}
+
+function forceRenderMap(){
+ debugLog("forceRenderMap");
+ 
+ if(window.renderWorldMap){
+   debugLog("call renderWorldMap");
+   renderWorldMap();
+   return;
+ }
+
+ // fallback: create dummy clickable areas
+ let container =
+ document.querySelector("#screen-worldmap .wm-map") ||
+ document.querySelector("#screen-worldmap .map") ||
+ document.querySelector("#screen-worldmap");
+
+ if(!container) return;
+
+ debugLog("fallback map");
+
+ container.innerHTML += `
+ <div data-area="west" style="padding:20px;border:1px solid #555;margin:6px;">
+ 西の村
+ </div>
+ <div data-area="east" style="padding:20px;border:1px solid #555;margin:6px;">
+ 東の村
+ </div>
+ `;
 }
 
 function openSettings(){
- debugLog("settings open");
  let o=document.getElementById('overlay-settings');
  if(o) o.classList.add('show');
 }
 
 function closeSettings(){
- debugLog("settings close");
  let o=document.getElementById('overlay-settings');
  if(o) o.classList.remove('show');
 }
 
 function continueGame(){
- showScreen('screen-worldmap');
+ startGame();
 }
 
-/* volume debug */
-document.addEventListener('input',e=>{
- if(e.target.id==='volume-slider'){
-   debugLog("volume:"+e.target.value);
- }
-});
-
-/* AREA CLICK DEBUG */
 document.addEventListener('click',e=>{
 
  let area = e.target.closest('[data-area]');
  if(area){
-   debugLog("AREA CLICK:"+area.dataset.area);
+   debugLog("AREA:"+area.dataset.area);
    if(window.selectArea){
      selectArea(area.dataset.area);
-   }
-   return;
- }
-
- let stage = e.target.closest('[data-stage]');
- if(stage){
-   debugLog("STAGE CLICK:"+stage.dataset.stage);
-   if(window.enterStage){
-     enterStage(stage.dataset.stage);
+   }else{
+     debugLog("no selectArea");
    }
  }
 
