@@ -575,6 +575,13 @@ color:#999;
 z-index:999999;
 }
 
+/* ネタバレ進捗削除 */
+#wm-progress,
+.wm-progress{
+display:none !important;
+}
+
+/* debug */
 #debugBox{
 position:fixed;
 bottom:4px;
@@ -593,7 +600,7 @@ padding:4px;
 
 </head>
 <body>
-<div id='versionLabel'>v0.0.9-debug</div>
+<div id='versionLabel'>v0.0.10</div>
 
 <!-- ========== 言語選択画面 ========== -->
 <div class="screen active" id="screen-lang">
@@ -6082,7 +6089,6 @@ function debugLog(m){
  d.innerHTML=m+"<br>"+d.innerHTML;
 }
 
-/* screen control */
 function showScreen(id){
  debugLog("screen:"+id);
  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -6090,74 +6096,53 @@ function showScreen(id){
  if(el) el.classList.add('active');
 }
 
-/* language */
 function selectLang(lang){
  debugLog("lang:"+lang);
  window.currentLang=lang;
  showScreen('screen-title');
 }
 
-/* start */
 function startGame(){
  debugLog("startGame");
  showScreen('screen-worldmap');
  if(window.renderWorldMap) renderWorldMap();
 }
 
-/* AREA LOGIC RESTORE */
-function selectArea(area){
- debugLog("selectArea:"+area);
- enterArea(area);
-}
+/* エリア選択 */
+document.addEventListener('click',e=>{
 
-function enterArea(area){
- debugLog("enterArea:"+area);
- // simple stage list
- const container=document.querySelector("#screen-worldmap");
- container.innerHTML=`
- <div class="debug-stage" data-stage="`+area+`-1">`+area+` 1</div>
- <div class="debug-stage" data-stage="`+area+`-2">`+area+` 2</div>
- <div class="debug-stage" data-stage="`+area+`-3">`+area+` 3</div>
- `;
-}
+ const area=e.target.closest('[data-area]');
+ if(area){
+   debugLog("AREA:"+area.dataset.area);
+   if(window.selectArea){
+     selectArea(area.dataset.area);
+   }
+ }
 
-function enterStage(id){
- debugLog("enterStage:"+id);
- showScreen('screen-game');
-}
+ const stage=e.target.closest('[data-stage]');
+ if(stage){
+   debugLog("STAGE:"+stage.dataset.stage);
+   if(window.enterStage){
+     enterStage(stage.dataset.stage);
+   }
+ }
 
-/* settings restore */
+});
+
+/* 設定 */
 function openSettings(){
- debugLog("openSettings");
  const el=document.getElementById('overlay-settings');
  if(el) el.classList.add('show');
 }
 
 function closeSettings(){
- debugLog("closeSettings");
  const el=document.getElementById('overlay-settings');
  if(el) el.classList.remove('show');
 }
 
 function continueGame(){
- debugLog("continueGame");
  showScreen('screen-worldmap');
 }
-
-/* click delegation */
-document.addEventListener('click',e=>{
-
- const area=e.target.closest('[data-area]');
- if(area){
-   selectArea(area.dataset.area);
- }
-
- const stage=e.target.closest('[data-stage]');
- if(stage){
-   enterStage(stage.dataset.stage);
- }
-
-});
 
 window.addEventListener('error',e=>debugLog("ERR:"+e.message));
 
